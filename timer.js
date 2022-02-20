@@ -20,12 +20,12 @@ class Timer {
         // The onStart callback is optional, so check if it exists
         // before calling the callback function.
         if (this.onStart) {
-            this.onStart();
+            this.onStart(this.timeRemaining);
         }
         // Jumpstart the timer.
         this.tick();
-        // Continue executing the tick method every second.
-        this.intervalId = setInterval(this.tick, 1000);
+        // Continue executing the tick method 20 milliseconds.
+        this.intervalId = setInterval(this.tick, 20);
     };
 
     pause = () => {
@@ -42,11 +42,13 @@ class Timer {
                 this.onComplete();
             }
         } else {
-            this.timeRemaining = this.timeRemaining - 1;
+            // Since we update every 20 milliseconds, we should
+            // subtract 0.02 to timeRemaining
+            this.timeRemaining = this.timeRemaining - 0.02;
             // The onTick callback is optional, so check if it exists
             // before calling the callback function.
             if (this.onTick) {
-                this.onTick();
+                this.onTick(this.timeRemaining);
             }
         };
     };
@@ -58,6 +60,7 @@ class Timer {
 
     set timeRemaining(time) {
         // time setter.
-        this.durationInput.value = time;
+        // Round to only 2 decimals.
+        this.durationInput.value = time.toFixed(2);
     }
 }

@@ -6,18 +6,17 @@ const circle = document.querySelector('circle');
 const perimeter = circle.getAttribute('r') * 2 * Math.PI;
 circle.setAttribute('stroke-dasharray', perimeter);
 
-let currentOffset = 0;
+let duration;
 
 const timer = new Timer(durationInput, startButton, pauseButton, {
-    onStart() {
-        console.log("The timer started!");
+    onStart(totalDuration) {
+        duration = totalDuration;
     },
 
-    onTick() {
+    onTick(timeRemaining) {
         // 'Reduce' the circle stroke by modifying
         // the stroke-offset
-        circle.setAttribute('stroke-dashoffset', currentOffset);
-        currentOffset = currentOffset - 50;
+        circle.setAttribute('stroke-dashoffset', perimeter * timeRemaining / duration - perimeter);
     },
 
     onComplete() {
